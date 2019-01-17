@@ -1,0 +1,8 @@
+*.tags
+*.tags-dep
+target/
+*.project
+*.idea
+*.swp
+server/src/test/scala/Scratch*
+server/src/test/scala/scratch*
