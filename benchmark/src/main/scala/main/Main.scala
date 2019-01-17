@@ -28,6 +28,7 @@ object Main extends IOApp {
                       .sortBy(
                         FieldSort("id.keyword").order(Asc)
                       )
+                      .sourceInclude("id")
 
     def request(search: SearchRequest)(implicit F: Concurrent[T])
         : T[Response[SearchResponse]] = {
