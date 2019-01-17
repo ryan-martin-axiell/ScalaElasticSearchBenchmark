@@ -17,12 +17,13 @@ import fs2.concurrent.Queue
 import scala.language.higherKinds
 
 object Main extends IOApp {
-  class ElasticStream[T[_]](d: Deferred[T, Either[Throwable,Unit]]) {
+  class ElasticStream[T[_]]
+      (table: String, d: Deferred[T, Either[Throwable,Unit]]) {
     val client = ElasticClient(
       ElasticProperties("http://localhost:9200?cluster.name=elasticsearch")
     )
 
-    val baseQuery = searchWithType("nhm-eregistry" -> "_doc")
+    val baseQuery = searchWithType(table -> "_doc")
                       .matchAllQuery
                       .size(5000)
                       .sortBy(
@@ -71,20 +72,29 @@ object Main extends IOApp {
     } yield row
   }
 
-	def run(args: List[String]): IO[ExitCode] = {
+  def prog[T[_]](table: String)
+      (implicit F: ConcurrentEffect[T]): T[ExitCode] = {
     for {
-         start <- IO(System.nanoTime)
-      deferred <- Deferred[IO, Either[Throwable,Unit]]
-        client =  new ElasticStream[IO](deferred)
-        stream <- records[IO](client)
+         start <- F.delay(System.nanoTime)
+      deferred <- Deferred[T, Either[Throwable,Unit]]
+        client =  new ElasticStream[T](table, deferred)
+        stream <- records[T](client)
                     .interruptWhen(deferred)
                     .compile.drain.map { _ =>
                       client.client.close()
                       ExitCode.Success
                     }
-           end <- IO(System.nanoTime)
+           end <- F.delay(System.nanoTime)
        elapsed =  (end - start).toDouble
              _ =  println(s"Took ${elapsed/1000000000.0}s")
     } yield stream
+  }
+
+	def run(args: List[String]): IO[ExitCode] = {
+    if (args.size != 1) {
+      IO(println("Must supply table as argument")).as(ExitCode.Error)
+    } else {
+      prog[IO](args.last)
+    }
 	}
 }
