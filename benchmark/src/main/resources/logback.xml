@@ -1,0 +1,25 @@
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d %level [%thread] %logger{0} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="STDOUT" />
+  </appender>
+
+
+  <root level="INFO">
+    <appender-ref ref="STDOUT" />
+    <!-- Remove comments to log to file "logging.log"
+    <appender-ref ref="FILE" />
+    -->
+  </root>
+
+  <logger name="com,sksamuel.elastic4s" level="INFO"/>
+  <!-- Remove comments to adjust logging for particular classes
+  <logger name="com.redis.RedisClient" level="DEBUG"/>
+  <logger name="org.mongodb.driver.connection" level="DEBUG"/>
+  -->
+</configuration>

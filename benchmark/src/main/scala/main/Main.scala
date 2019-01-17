@@ -72,6 +72,7 @@ object Main extends IOApp {
 
 	def run(args: List[String]): IO[ExitCode] = {
     for {
+         start <- IO(System.nanoTime)
       deferred <- Deferred[IO, Either[Throwable,Unit]]
         client =  new ElasticStream[IO](deferred)
         stream <- records[IO](client)
@@ -80,6 +81,9 @@ object Main extends IOApp {
                       client.client.close()
                       ExitCode.Success
                     }
+           end <- IO(System.nanoTime)
+       elapsed =  (end - start).toDouble
+             _ =  println(s"Took ${elapsed/1000000000.0}s")
     } yield stream
 	}
 }
