@@ -1,0 +1,13 @@
+[0m[[0m[31merror[0m] [0m[0m/home/axiell/scala-es-bench/Main.scala:12:21: not found: type IOApp[0m
+[0m[[0m[31merror[0m] [0m[0mobject Main extends IOApp {[0m
+[0m[[0m[31merror[0m] [0m[0m                    ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/axiell/scala-es-bench/Main.scala:13:35: not found: type ExitCode[0m
+[0m[[0m[31merror[0m] [0m[0m	def run(args: Array[String]): IO[ExitCode] = {[0m
+[0m[[0m[31merror[0m] [0m[0m	                                 ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/axiell/scala-es-bench/Main.scala:31:27: not found: value ExitCode[0m
+[0m[[0m[31merror[0m] [0m[0m		IO(println("hello")).as(ExitCode.Success)[0m
+[0m[[0m[31merror[0m] [0m[0m		                        ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/axiell/scala-es-bench/Main.scala:4:18: Unused import[0m
+[0m[[0m[31merror[0m] [0m[0mimport cats.data._[0m
+[0m[[0m[31merror[0m] [0m[0m                 ^[0m
+[0m[[0m[31merror[0m] [0m[0mfour errors found[0m
